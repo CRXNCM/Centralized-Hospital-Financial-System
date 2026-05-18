@@ -1,4 +1,5 @@
 import {
+  IconAlert,
   IconBarChart,
   IconDashboard,
   IconHistory,
@@ -25,6 +26,7 @@ export const SIDEBAR_NAV_ICONS = {
   overview: IconShield,
   users: IconUsers,
   logs: IconDatabase,
+  notifications: IconAlert,
 };
 
 export function getNavIcon(id) {

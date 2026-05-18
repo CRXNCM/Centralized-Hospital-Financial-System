@@ -5,6 +5,7 @@ import SystemSettings from "../components/admin/SystemSettings";
 import UserManagement from "../components/admin/UserManagement";
 import SystemLogs from "../components/admin/SystemLogs";
 import ReportsBackup from "../components/admin/ReportsBackup";
+import NotificationsAlerts from "../components/admin/NotificationsAlerts";
 import PortalLayout from "../components/PortalLayout";
 
 const role = ROLES.admin;
@@ -24,6 +25,7 @@ export default function AdminPortal({ onSwitchRole }) {
       {page === "users" && <UserManagement />}
       {page === "logs" && <SystemLogs />}
       {page === "reports" && <ReportsBackup />}
+      {page === "notifications" && <NotificationsAlerts />}
     </PortalLayout>
   );
 }
