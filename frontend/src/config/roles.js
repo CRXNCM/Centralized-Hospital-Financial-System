@@ -54,13 +54,15 @@ export const ROLES = {
     badge: "Control Center",
     navItems: [
       { id: "overview", label: "Admin Dashboard" },
-      { id: "settings", label: "Settings" },
+      { id: "settings", label: "Payment Settings" },
       { id: "users", label: "User Management" },
+      { id: "logs", label: "System Logs" },
     ],
     pageTitles: {
       overview: "Admin Dashboard",
-      settings: "Hospital Settings",
+      settings: "Payment Settings",
       users: "User Management",
+      logs: "System Logs",
     },
   },
 };

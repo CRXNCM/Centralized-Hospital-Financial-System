@@ -3,6 +3,7 @@ import {
   IconDashboard,
   IconHistory,
   IconPayment,
+  IconDatabase,
   IconSettings,
   IconShield,
   IconUsers,
@@ -23,6 +24,7 @@ export const SIDEBAR_NAV_ICONS = {
   settings: IconSettings,
   overview: IconShield,
   users: IconUsers,
+  logs: IconDatabase,
 };
 
 export function getNavIcon(id) {
