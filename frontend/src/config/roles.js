@@ -1,0 +1,68 @@
+export const ROLES = {
+  manager: {
+    id: "manager",
+    label: "Manager",
+    portalTitle: "Manager Portal",
+    portalSubtitle: "Financial oversight & reporting",
+    userName: "Manager",
+    userInitial: "M",
+    badge: "Finance",
+    navItems: [
+      { id: "dashboard", label: "Dashboard" },
+      { id: "analytics", label: "Revenue Analytics" },
+      { id: "reports", label: "Reports" },
+      { id: "transactions", label: "Transaction History" },
+      { id: "patients", label: "Patient Details" },
+    ],
+    pageTitles: {
+      dashboard: "Financial Overview",
+      analytics: "Revenue Analytics",
+      reports: "Reports",
+      transactions: "Transaction History",
+      patients: "Patient Payment Details",
+    },
+  },
+  reception: {
+    id: "reception",
+    label: "Reception",
+    portalTitle: "Reception Portal",
+    portalSubtitle: "Patient payments & front desk",
+    userName: "Tigist",
+    userInitial: "T",
+    badge: "Front Desk",
+    headerMode: "welcome",
+    navItems: [
+      { id: "home", label: "Today's Desk" },
+      { id: "payment", label: "Reception Payment" },
+      { id: "today", label: "Today's Payments" },
+      { id: "history", label: "Patient History" },
+    ],
+    pageTitles: {
+      home: "Today's Desk",
+      payment: "Record Payment",
+      today: "Today's Payments",
+      history: "Patient History",
+    },
+  },
+  admin: {
+    id: "admin",
+    label: "System Admin",
+    portalTitle: "System Admin Portal",
+    portalSubtitle: "Settings & advanced controls",
+    userName: "System Admin",
+    userInitial: "S",
+    badge: "Control Center",
+    navItems: [
+      { id: "overview", label: "Admin Dashboard" },
+      { id: "settings", label: "Settings" },
+      { id: "users", label: "User Management" },
+    ],
+    pageTitles: {
+      overview: "Admin Dashboard",
+      settings: "Hospital Settings",
+      users: "User Management",
+    },
+  },
+};
+
+export const ROLE_LIST = [ROLES.manager, ROLES.reception, ROLES.admin];
