@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { ROLES } from "../config/roles";
 import AdminOverview from "../components/admin/AdminOverview";
-import SystemSettings from "../components/admin/SystemSettings";
+import PaymentSettings from "../components/admin/PaymentSettings";
+import GeneralSystemSettings from "../components/admin/GeneralSystemSettings";
 import UserManagement from "../components/admin/UserManagement";
 import SystemLogs from "../components/admin/SystemLogs";
 import ReportsBackup from "../components/admin/ReportsBackup";
@@ -21,7 +22,8 @@ export default function AdminPortal({ onSwitchRole }) {
       onSwitchRole={onSwitchRole}
     >
       {page === "overview" && <AdminOverview />}
-      {page === "settings" && <SystemSettings />}
+      {page === "settings" && <PaymentSettings />}
+      {page === "system" && <GeneralSystemSettings />}
       {page === "users" && <UserManagement />}
       {page === "logs" && <SystemLogs />}
       {page === "reports" && <ReportsBackup />}

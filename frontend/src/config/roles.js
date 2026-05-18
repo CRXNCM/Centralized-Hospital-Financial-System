@@ -59,6 +59,7 @@ export const ROLES = {
       { id: "logs", label: "System Logs" },
       { id: "reports", label: "Reports & Backup" },
       { id: "notifications", label: "Notifications & Alerts" },
+      { id: "system", label: "System Settings" },
     ],
     pageTitles: {
       overview: "Admin Dashboard",
@@ -67,6 +68,7 @@ export const ROLES = {
       logs: "System Logs",
       reports: "Reports & Backup",
       notifications: "Notifications & Alerts",
+      system: "System Settings",
     },
   },
 };
