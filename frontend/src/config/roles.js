@@ -57,12 +57,14 @@ export const ROLES = {
       { id: "settings", label: "Payment Settings" },
       { id: "users", label: "User Management" },
       { id: "logs", label: "System Logs" },
+      { id: "reports", label: "Reports & Backup" },
     ],
     pageTitles: {
       overview: "Admin Dashboard",
       settings: "Payment Settings",
       users: "User Management",
       logs: "System Logs",
+      reports: "Reports & Backup",
     },
   },
 };
