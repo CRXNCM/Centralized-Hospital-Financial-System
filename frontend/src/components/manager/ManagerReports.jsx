@@ -9,7 +9,7 @@ export default function ManagerReports() {
       <header>
         <h1 className="text-2xl font-bold text-white">Revenue Analytics</h1>
         <p className="mt-1 text-sm text-[#94A3B8]">
-          Trends, payment splits, and service performance
+          Trend, payment splits, and service performance
         </p>
       </header>
 

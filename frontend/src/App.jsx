@@ -19,7 +19,7 @@ export default function App() {
   if (activeRole === "reception") {
     return <ReceptionPortal onSwitchRole={handleSwitchRole} />;
   }
-  if (activeRole === "admin") {
+  if (activeRole === "admin") { 
     return <AdminPortal onSwitchRole={handleSwitchRole} />;
   }
 
