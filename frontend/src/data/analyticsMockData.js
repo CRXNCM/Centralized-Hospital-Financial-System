@@ -50,6 +50,30 @@ export const TOP_SERVICES = [
   { rank: 5, name: "Surgery Prep", revenue: 52400 },
 ];
 
+export const TOP_SERVICES_BY_PERIOD = {
+  daily: [
+    { rank: 1, name: "Consultation", revenue: 6200 },
+    { rank: 2, name: "Laboratory", revenue: 5800 },
+    { rank: 3, name: "Pharmacy", revenue: 4100 },
+    { rank: 4, name: "X-Ray", revenue: 3200 },
+    { rank: 5, name: "New Card", revenue: 900 },
+  ],
+  weekly: [
+    { rank: 1, name: "Laboratory", revenue: 42800 },
+    { rank: 2, name: "Consultation", revenue: 38400 },
+    { rank: 3, name: "Pharmacy", revenue: 22100 },
+    { rank: 4, name: "X-Ray", revenue: 19600 },
+    { rank: 5, name: "Surgery Prep", revenue: 15200 },
+  ],
+  monthly: TOP_SERVICES,
+};
+
+export const TOP_SERVICES_PERIOD_LABELS = {
+  daily: "today",
+  weekly: "this week",
+  monthly: "this month",
+};
+
 export function formatEtb(amount) {
   return `ETB ${amount.toLocaleString()}`;
 }

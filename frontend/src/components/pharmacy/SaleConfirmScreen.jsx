@@ -44,10 +44,6 @@ export default function SaleConfirmScreen({ sale, onBack, onComplete }) {
 
       <article className="glass-card p-6 sm:p-8">
         <div className="divide-y divide-[rgba(34,211,238,0.08)]">
-          <SummaryRow label="Medicine">{sale.medicineName}</SummaryRow>
-          <SummaryRow label="Quantity">
-            <span className="font-semibold">{sale.quantity}</span>
-          </SummaryRow>
           <SummaryRow label="Payment Method">
             <span className="inline-flex items-center justify-end gap-2">
               <PaymentIcon className="h-5 w-5 text-[#22D3EE]" />

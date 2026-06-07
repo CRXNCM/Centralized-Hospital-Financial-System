@@ -3,6 +3,7 @@ import {
   buildMonthReport,
   buildReport,
   buildTodayReport,
+  buildWeekReport,
   delay,
   randomLoadingMs,
 } from "../../utils/generateReport";
@@ -59,7 +60,12 @@ export default function ReportsPage() {
     setLoadingQuick(type);
     setQuickSuccess(null);
     await delay(randomLoadingMs());
-    const result = type === "today" ? buildTodayReport() : buildMonthReport();
+    const result =
+      type === "today"
+        ? buildTodayReport()
+        : type === "week"
+          ? buildWeekReport()
+          : buildMonthReport();
     setReport(result);
     setLoadingQuick(null);
     setQuickSuccess(type);
@@ -116,6 +122,15 @@ export default function ReportsPage() {
           <button
             type="button"
             disabled={loadingQuick !== null}
+            onClick={() => runQuickReport("week")}
+            className="flex min-w-[200px] flex-1 items-center justify-center gap-2 rounded-xl border border-[rgba(34,211,238,0.25)] bg-[rgba(34,211,238,0.1)] px-6 py-4 text-sm font-bold text-[#22D3EE] transition-all hover:bg-[rgba(34,211,238,0.18)] disabled:opacity-60 sm:flex-none"
+          >
+            {loadingQuick === "week" ? <Spinner light /> : null}
+            {loadingQuick === "week" ? "Generating…" : "Generate Weekly Report"}
+          </button>
+          <button
+            type="button"
+            disabled={loadingQuick !== null}
             onClick={() => runQuickReport("month")}
             className="flex min-w-[200px] flex-1 items-center justify-center gap-2 rounded-xl border border-[rgba(34,211,238,0.25)] bg-[rgba(34,211,238,0.1)] px-6 py-4 text-sm font-bold text-[#22D3EE] transition-all hover:bg-[rgba(34,211,238,0.18)] disabled:opacity-60 sm:flex-none"
           >
@@ -125,7 +140,13 @@ export default function ReportsPage() {
         </div>
         {quickSuccess && (
           <p className="mt-4 text-sm font-semibold text-[#10B981]">
-            ✓ {quickSuccess === "today" ? "Today's" : "Monthly"} report generated successfully
+            ✓{" "}
+            {quickSuccess === "today"
+              ? "Today's"
+              : quickSuccess === "week"
+                ? "Weekly"
+                : "Monthly"}{" "}
+            report generated successfully
           </p>
         )}
       </section>

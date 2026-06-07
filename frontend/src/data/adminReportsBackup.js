@@ -48,9 +48,9 @@ export function createInitialReportsBackupSettings() {
       retentionDays: 30,
     },
     lastBackup: {
-      label: "December 14, 2024 — 11:59 PM — Successful",
+      label: "December 14, 2026 — 11:59 PM — Successful",
       status: "success",
     },
-    nextBackup: "December 15, 2024 — 11:59 PM",
+    nextBackup: "December 15, 2026 — 11:59 PM",
   };
 }

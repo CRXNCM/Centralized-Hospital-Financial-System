@@ -5,6 +5,34 @@ export { formatEtb };
 
 export const PHARMACY_RECEPTIONIST_NAME = "Hanna";
 
+const SALES_STORAGE_KEY = "chfs-pharmacy-sales";
+
+export function loadPersistedSales() {
+  try {
+    const raw = localStorage.getItem(SALES_STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch {
+    /* use seed data */
+  }
+  return createInitialSales();
+}
+
+export function persistSales(sales) {
+  try {
+    localStorage.setItem(SALES_STORAGE_KEY, JSON.stringify(sales));
+    window.dispatchEvent(new CustomEvent("pharmacy-sales-updated"));
+  } catch {
+    /* ignore quota errors in demo */
+  }
+}
+
+export function getPharmacyTodayTotal(sales = loadPersistedSales()) {
+  return getTodaysSales(sales).reduce((sum, sale) => sum + sale.amount, 0);
+}
+
 let saleCounter = 3;
 
 function nowIso() {
@@ -109,8 +137,8 @@ export function recordSale(sales, saleInput) {
   const record = {
     id: `sale-${Date.now()}`,
     saleId,
-    medicineName: saleInput.medicineName.trim(),
-    quantity: saleInput.quantity,
+    medicineName: saleInput.medicineName?.trim() || "Pharmacy Sale",
+    quantity: saleInput.quantity ?? 1,
     paymentTypeId: methodId,
     methodId,
     paymentType: methodLabel,

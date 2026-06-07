@@ -1,10 +1,12 @@
 import { pickRandomPaymentMethod } from "./paymentMethods";
+import { getFixedServicePrice } from "./receptionBillStore";
 
 export const STAT_VALUES = {
   revenue: 24850,
   patients: 47,
   verifiedAmount: 22100,
   pendingAmount: 2750,
+  pharmacyPayments: 890,
 };
 
 export const CHART_DATA = {
@@ -77,7 +79,7 @@ const PATIENTS = [
   "Tigist Worku", "Dawit Mekonnen", "Hanna Solomon", "Kidus Alemayehu",
 ];
 
-const SERVICES = ["Consultation", "Laboratory", "X-Ray", "Pharmacy", "Surgery Prep"];
+const SERVICES = ["Consultation", "Laboratory", "X-Ray", "Pharmacy", "Surgery Prep", "New Card"];
 const STATUSES = ["Paid", "Verified", "Pending", "Failed"];
 
 let txCounter = 1000;
@@ -99,7 +101,9 @@ const VERIFIERS = ["Manager Sara Bekele", "Admin User", "Tigist Haile", "Dawit M
 
 export function createTransaction(overrides = {}) {
   txCounter += 1;
-  const amountNum = overrides.amountNum ?? randomAmount();
+  const service = overrides.service ?? randomItem(SERVICES);
+  const amountNum =
+    overrides.amountNum ?? getFixedServicePrice(service) ?? randomAmount();
   const now = overrides.dateObj ?? new Date();
   const status = overrides.status ?? randomItem(STATUSES);
   const id = overrides.id ?? `TX-${txCounter}`;
@@ -113,7 +117,7 @@ export function createTransaction(overrides = {}) {
     billId,
     patientId,
     patient: overrides.patient ?? randomItem(PATIENTS),
-    service: overrides.service ?? randomItem(SERVICES),
+    service,
     amountNum,
     billAmount: overrides.billAmount ?? amountNum,
     amountPaid,

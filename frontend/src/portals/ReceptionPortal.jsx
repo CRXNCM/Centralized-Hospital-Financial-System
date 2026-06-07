@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { ROLES } from "../config/roles";
-import { ReceptionBillsProvider } from "../context/ReceptionBillsContext";
 import { ReceptionToastProvider } from "../context/ReceptionToastContext";
 import PageTransition from "../components/PageTransition";
 import PortalLayout from "../components/PortalLayout";
@@ -17,9 +16,8 @@ export default function ReceptionPortal({ onSwitchRole }) {
   const sidebarActivePage = page === "payment" ? "payment" : page;
 
   return (
-    <ReceptionBillsProvider>
-      <ReceptionToastProvider>
-        <PortalLayout
+    <ReceptionToastProvider>
+      <PortalLayout
           role={role}
           activePage={page}
           sidebarActivePage={sidebarActivePage}
@@ -27,7 +25,9 @@ export default function ReceptionPortal({ onSwitchRole }) {
           onSwitchRole={onSwitchRole}
         >
           <PageTransition pageKey={page}>
-            {page === "home" && <ReceptionHome />}
+            {page === "home" && (
+              <ReceptionHome onRecordPayment={() => setPage("payment")} />
+            )}
             {page === "payment" && (
               <ReceptionPayment onViewToday={() => setPage("today")} />
             )}
@@ -39,7 +39,6 @@ export default function ReceptionPortal({ onSwitchRole }) {
             {page === "history" && <PatientHistory />}
           </PageTransition>
         </PortalLayout>
-      </ReceptionToastProvider>
-    </ReceptionBillsProvider>
+    </ReceptionToastProvider>
   );
 }

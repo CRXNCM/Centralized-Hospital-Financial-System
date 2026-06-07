@@ -4,6 +4,7 @@ import AdminPortal from "./portals/AdminPortal";
 import ManagerPortal from "./portals/ManagerPortal";
 import PharmacyReceptionPortal from "./portals/PharmacyReceptionPortal";
 import ReceptionPortal from "./portals/ReceptionPortal";
+import { ReceptionBillsProvider } from "./context/ReceptionBillsContext";
 
 export default function App() {
   const [activeRole, setActiveRole] = useState(null);
@@ -18,7 +19,11 @@ export default function App() {
     return <ManagerPortal onSwitchRole={handleSwitchRole} />;
   }
   if (activeRole === "reception") {
-    return <ReceptionPortal onSwitchRole={handleSwitchRole} />;
+    return (
+      <ReceptionBillsProvider>
+        <ReceptionPortal onSwitchRole={handleSwitchRole} />
+      </ReceptionBillsProvider>
+    );
   }
   if (activeRole === "pharmacy") {
     return <PharmacyReceptionPortal onSwitchRole={handleSwitchRole} />;

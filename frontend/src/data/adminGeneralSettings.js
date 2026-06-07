@@ -21,8 +21,9 @@ export const SYSTEM_INFO = {
   version: "1.0.0",
   developedBy: "AbaderTech System",
   hospital: "Central City Hospital",
-  lastUpdated: "December 2024",
+  lastUpdated: "December 2026",
   supportContact: "support@abadertech.com",
+  supportPhone: "0925254765",
 };
 
 export function createInitialGeneralSettings() {

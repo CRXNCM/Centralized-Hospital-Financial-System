@@ -1,18 +1,48 @@
-import { TOP_SERVICES, formatEtb } from "../../../data/analyticsMockData";
+import { useState } from "react";
+import {
+  TOP_SERVICES_BY_PERIOD,
+  TOP_SERVICES_PERIOD_LABELS,
+  formatEtb,
+} from "../../../data/analyticsMockData";
+
+const PERIODS = ["daily", "weekly", "monthly"];
 
 export default function TopServicesList() {
-  const maxRevenue = TOP_SERVICES[0].revenue;
+  const [period, setPeriod] = useState("monthly");
+  const services = TOP_SERVICES_BY_PERIOD[period];
+  const maxRevenue = services[0]?.revenue ?? 1;
+  const periodLabel = TOP_SERVICES_PERIOD_LABELS[period];
 
   return (
     <section className="glass-card p-6">
-      <h2 className="text-lg font-semibold text-white">Top Services by Revenue</h2>
-      <p className="mt-1 text-sm text-[#94A3B8]">Ranked 1–5 this month</p>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h2 className="text-lg font-semibold text-white">Top Services by Revenue</h2>
+          <p className="mt-1 text-sm text-[#94A3B8]">Ranked 1–5 — {periodLabel}</p>
+        </div>
+        <div className="flex rounded-xl border border-[rgba(34,211,238,0.15)] bg-[rgba(5,13,26,0.5)] p-1">
+          {PERIODS.map((p) => (
+            <button
+              key={p}
+              type="button"
+              onClick={() => setPeriod(p)}
+              className={`rounded-lg px-3 py-1.5 text-xs font-semibold capitalize transition-all ${
+                period === p
+                  ? "bg-[#22D3EE] text-[#050D1A] shadow-[0_0_12px_rgba(34,211,238,0.4)]"
+                  : "text-[#94A3B8] hover:text-white"
+              }`}
+            >
+              {p}
+            </button>
+          ))}
+        </div>
+      </div>
 
       <ol className="mt-6 space-y-5">
-        {TOP_SERVICES.map((service, index) => {
+        {services.map((service, index) => {
           const scale = service.revenue / maxRevenue;
           return (
-            <li key={service.name}>
+            <li key={`${period}-${service.name}`}>
               <div className="mb-2 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[rgba(34,211,238,0.15)] text-xs font-bold text-[#22D3EE]">

@@ -405,6 +405,7 @@ export default function GeneralSystemSettings() {
               ["Hospital", SYSTEM_INFO.hospital],
               ["Last Updated", SYSTEM_INFO.lastUpdated],
               ["Support Contact", SYSTEM_INFO.supportContact],
+              ["Support Phone", SYSTEM_INFO.supportPhone],
             ].map(([term, value]) => (
               <div key={term} className="border-b border-[rgba(34,211,238,0.06)] pb-4 last:border-0 last:pb-0">
                 <dt className="text-xs font-semibold uppercase tracking-wider text-[#64748B]">

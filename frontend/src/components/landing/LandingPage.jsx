@@ -239,7 +239,7 @@ export default function LandingPage({ onSelectRole }) {
               <p className="mt-1 text-sm text-[#22D3EE]">Powered by AbaderTech System</p>
             </div>
             <p className="text-sm text-[#94A3B8]">
-              © 2024 AbaderTech System. All rights reserved.
+              © 2026 AbaderTech System. All rights reserved.
             </p>
             <div className="text-sm">
               <p className="font-semibold text-white">Contact Us</p>
@@ -249,7 +249,12 @@ export default function LandingPage({ onSelectRole }) {
               >
                 support@abadertech.com
               </a>
-              <p className="mt-1 text-[#94A3B8]">+251 11 000 0000</p>
+              <a
+                href="tel:+251925254765"
+                className="mt-1 block text-[#94A3B8] transition-colors hover:text-[#22D3EE]"
+              >
+                0925254765
+              </a>
             </div>
           </div>
           <p className="mx-auto mt-10 max-w-2xl text-center text-xs text-[#64748B]">

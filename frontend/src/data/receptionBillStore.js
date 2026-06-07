@@ -13,6 +13,36 @@ export const PAYMENT_DISPLAY_STATUS = {
 
 export const RECEPTIONIST_NAME = "Tigist";
 
+/** Typical service prices at reception (ETB) — bills may vary except fixed-price services. */
+export const RECEPTION_SERVICE_PRICES = {
+  Consultation: 500,
+  "X-Ray": 800,
+  Pharmacy: 350,
+  "Surgery Prep": 3500,
+  "New Card": 300,
+};
+
+/** Services with a mandatory fixed charge; amount cannot be edited at reception. */
+export const FIXED_SERVICE_PRICES = {
+  "New Card": 300,
+};
+
+export const RECEPTION_SERVICES = Object.entries(RECEPTION_SERVICE_PRICES).map(
+  ([name, amount]) => ({ name, amount }),
+);
+
+export function getServicePrice(serviceName) {
+  return RECEPTION_SERVICE_PRICES[serviceName] ?? null;
+}
+
+export function getFixedServicePrice(serviceName) {
+  return FIXED_SERVICE_PRICES[serviceName] ?? null;
+}
+
+export function isFixedPriceService(serviceName) {
+  return Object.prototype.hasOwnProperty.call(FIXED_SERVICE_PRICES, serviceName);
+}
+
 /** Reception confirm screen verifies the payment — always Paid when recorded here. */
 function verificationStatusForReceptionRecord() {
   return PAYMENT_DISPLAY_STATUS.PAID;
@@ -31,6 +61,8 @@ const INITIAL_BILLS = [
   { id: "bill-1010", billId: "BILL-1010", patientName: "Dawit Mekonnen", service: "Laboratory", amount: 1200 },
   { id: "bill-1011", billId: "BILL-1011", patientName: "Hanna Solomon", service: "Surgery Prep", amount: 3500 },
   { id: "bill-1012", billId: "BILL-1012", patientName: "Kidus Alemayehu", service: "Consultation", amount: 500 },
+  { id: "bill-1013", billId: "BILL-1013", patientName: "Elias Negash", service: "New Card", amount: 300 },
+  { id: "bill-1014", billId: "BILL-1014", patientName: "Marta Tesfaye", service: "New Card", amount: 300 },
 ];
 
 let recordCounter = 1;
@@ -128,7 +160,7 @@ export function recordBillPayment(bills, auditLog, { bill, method, methodId, amo
     recordedAt: at,
     timestamp: formatTimestamp(recordedDate),
     time: formatTime(recordedDate),
-    recordedBy: "Reception Staff",
+    recordedBy: RECEPTIONIST_NAME,
     notes: "Payment recorded and verified at reception.",
   };
 
@@ -176,7 +208,7 @@ export function voidBillPayment(bills, auditLog, billId) {
     relatedPaymentId: bill.lastPaymentRecordId,
     recordedAt: at,
     time: formatTime(new Date(at)),
-    recordedBy: "Reception Staff",
+    recordedBy: RECEPTIONIST_NAME,
     notes: "Payment voided — original payment retained in audit log.",
   };
 
@@ -217,7 +249,7 @@ export function restoreBillToUnpaid(bills, auditLog, billId) {
     relatedPaymentId: bill.lastPaymentRecordId,
     recordedAt: at,
     time: formatTime(new Date(at)),
-    recordedBy: "Reception Staff",
+    recordedBy: RECEPTIONIST_NAME,
     notes: "Bill restored to unpaid — prior payment and void entries kept on record.",
   };
 

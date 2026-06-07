@@ -44,8 +44,6 @@ export default function PharmacySale({ onViewSales }) {
             restore={
               pendingSale
                 ? {
-                    medicineName: pendingSale.medicineName,
-                    quantity: pendingSale.quantity,
                     methodId: pendingSale.methodId ?? pendingSale.paymentTypeId,
                     amount: pendingSale.amount,
                   }

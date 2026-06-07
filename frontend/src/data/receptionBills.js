@@ -97,6 +97,22 @@ export const RECEPTION_BILLS = [
     amount: 500,
     status: "Unpaid",
   },
+  {
+    id: "bill-1013",
+    billId: "BILL-1013",
+    patientName: "Elias Negash",
+    service: "New Card",
+    amount: 300,
+    status: "Unpaid",
+  },
+  {
+    id: "bill-1014",
+    billId: "BILL-1014",
+    patientName: "Marta Tesfaye",
+    service: "New Card",
+    amount: 300,
+    status: "Unpaid",
+  },
 ];
 
 export function searchReceptionBills(query) {

@@ -13,6 +13,14 @@ function monthStartISO() {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-01`;
 }
 
+function weekStartISO() {
+  const d = new Date();
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  const monday = new Date(d.getFullYear(), d.getMonth(), diff);
+  return monday.toISOString().slice(0, 10);
+}
+
 function aggregateBreakdown(items, key) {
   const map = {};
   for (const item of items) {
@@ -79,6 +87,14 @@ export function buildTodayReport() {
     dateFrom: today,
     dateTo: today,
     periodLabel: "Today",
+  });
+}
+
+export function buildWeekReport() {
+  return buildReport({
+    dateFrom: weekStartISO(),
+    dateTo: todayISO(),
+    periodLabel: "This week",
   });
 }
 

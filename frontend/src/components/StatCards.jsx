@@ -1,71 +1,32 @@
+import { useEffect, useState } from "react";
 import { STAT_VALUES } from "../data/managerMockData";
+import { getPharmacyTodayTotal } from "../data/pharmacySaleStore";
 import { useCountUp } from "../hooks/useCountUp";
-import { IconCheck, IconClock, IconTrendUp, IconUsers } from "./icons";
+import { IconCheck, IconClock, IconPharmacy, IconTrendUp, IconUsers } from "./icons";
 
 function formatEtb(n) {
   return n.toLocaleString();
 }
 
-const statsConfig = [
-  {
-    id: "revenue",
-    label: "Revenue Today",
-    numericValue: STAT_VALUES.revenue,
-    prefix: "ETB ",
-    format: formatEtb,
-    navigateTo: "transactions",
-    accent: "cyan",
-    icon: IconTrendUp,
-    iconClass: "text-[#22D3EE] bg-[rgba(34,211,238,0.12)]",
-    valueClass: "text-[#22D3EE]",
-    showTrend: true,
-    urgent: false,
-  },
-  {
-    id: "patients",
-    label: "Total Patients Today",
-    numericValue: STAT_VALUES.patients,
-    prefix: "",
-    format: (n) => String(n),
-    navigateTo: "transactions",
-    accent: "white",
-    icon: IconUsers,
-    iconClass: "text-white bg-[rgba(255,255,255,0.08)]",
-    valueClass: "text-white",
-    showTrend: false,
-    urgent: false,
-  },
-  {
-    id: "verified",
-    label: "Verified Payments",
-    numericValue: STAT_VALUES.verifiedAmount,
-    prefix: "ETB ",
-    format: formatEtb,
-    navigateTo: "transactions",
-    filter: "verified",
-    accent: "emerald",
-    icon: IconCheck,
-    iconClass: "text-[#10B981] bg-[rgba(16,185,129,0.12)]",
-    valueClass: "text-[#10B981]",
-    showTrend: false,
-    urgent: false,
-  },
-  {
-    id: "pending",
-    label: "Pending Verifications",
-    numericValue: STAT_VALUES.pendingAmount,
-    prefix: "ETB ",
-    format: formatEtb,
-    navigateTo: "transactions",
-    filter: "pending",
-    accent: "amber",
-    icon: IconClock,
-    iconClass: "text-[#F59E0B] bg-[rgba(245,158,11,0.12)]",
-    valueClass: "text-[#F59E0B]",
-    showTrend: false,
-    urgent: true,
-  },
-];
+function usePharmacyTodayTotal() {
+  const [total, setTotal] = useState(() => getPharmacyTodayTotal());
+
+  useEffect(() => {
+    function refresh() {
+      setTotal(getPharmacyTodayTotal());
+    }
+    window.addEventListener("pharmacy-sales-updated", refresh);
+    window.addEventListener("storage", refresh);
+    window.addEventListener("focus", refresh);
+    return () => {
+      window.removeEventListener("pharmacy-sales-updated", refresh);
+      window.removeEventListener("storage", refresh);
+      window.removeEventListener("focus", refresh);
+    };
+  }, []);
+
+  return total;
+}
 
 function StatValue({ stat }) {
   const count = useCountUp(stat.numericValue);
@@ -77,8 +38,80 @@ function StatValue({ stat }) {
 }
 
 export default function StatCards({ onNavigate }) {
+  const pharmacyTodayTotal = usePharmacyTodayTotal();
+
+  const statsConfig = [
+    {
+      id: "revenue",
+      label: "Revenue Today",
+      numericValue: STAT_VALUES.revenue,
+      prefix: "ETB ",
+      format: formatEtb,
+      navigateTo: "transactions",
+      icon: IconTrendUp,
+      iconClass: "text-[#22D3EE] bg-[rgba(34,211,238,0.12)]",
+      valueClass: "text-[#22D3EE]",
+      showTrend: true,
+      urgent: false,
+    },
+    {
+      id: "pharmacy",
+      label: "Pharmacy Payments Today",
+      numericValue: pharmacyTodayTotal,
+      prefix: "ETB ",
+      format: formatEtb,
+      navigateTo: "transactions",
+      icon: IconPharmacy,
+      iconClass: "text-[#8B5CF6] bg-[rgba(139,92,246,0.12)]",
+      valueClass: "text-[#A78BFA]",
+      showTrend: false,
+      urgent: false,
+    },
+    {
+      id: "patients",
+      label: "Total Patients Today",
+      numericValue: STAT_VALUES.patients,
+      prefix: "",
+      format: (n) => String(n),
+      navigateTo: "transactions",
+      icon: IconUsers,
+      iconClass: "text-white bg-[rgba(255,255,255,0.08)]",
+      valueClass: "text-white",
+      showTrend: false,
+      urgent: false,
+    },
+    {
+      id: "verified",
+      label: "Verified Payments",
+      numericValue: STAT_VALUES.verifiedAmount,
+      prefix: "ETB ",
+      format: formatEtb,
+      navigateTo: "transactions",
+      filter: "verified",
+      icon: IconCheck,
+      iconClass: "text-[#10B981] bg-[rgba(16,185,129,0.12)]",
+      valueClass: "text-[#10B981]",
+      showTrend: false,
+      urgent: false,
+    },
+    {
+      id: "pending",
+      label: "Pending Verifications",
+      numericValue: STAT_VALUES.pendingAmount,
+      prefix: "ETB ",
+      format: formatEtb,
+      navigateTo: "transactions",
+      filter: "pending",
+      icon: IconClock,
+      iconClass: "text-[#F59E0B] bg-[rgba(245,158,11,0.12)]",
+      valueClass: "text-[#F59E0B]",
+      showTrend: false,
+      urgent: true,
+    },
+  ];
+
   return (
-    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5">
       {statsConfig.map((stat) => {
         const Icon = stat.icon;
         return (
@@ -93,12 +126,17 @@ export default function StatCards({ onNavigate }) {
                 <div className="flex items-center gap-2">
                   <p className="text-sm font-medium text-[#94A3B8]">{stat.label}</p>
                   {stat.urgent && (
-                    <span className="pulse-dot h-2 w-2 shrink-0 rounded-full bg-[#F59E0B]" title="Requires attention" />
+                    <span
+                      className="pulse-dot h-2 w-2 shrink-0 rounded-full bg-[#F59E0B]"
+                      title="Requires attention"
+                    />
                   )}
                 </div>
                 <StatValue stat={stat} />
               </div>
-              <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${stat.iconClass} transition-transform group-hover:scale-110`}>
+              <div
+                className={`flex h-10 w-10 items-center justify-center rounded-xl ${stat.iconClass} transition-transform group-hover:scale-110`}
+              >
                 <Icon />
               </div>
             </div>

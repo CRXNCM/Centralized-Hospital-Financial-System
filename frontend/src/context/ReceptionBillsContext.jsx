@@ -1,4 +1,10 @@
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import {
   BILL_STATUS,
   createInitialBills,
@@ -59,7 +65,9 @@ export function ReceptionBillsProvider({ children }) {
   );
 
   return (
-    <ReceptionBillsContext.Provider value={value}>{children}</ReceptionBillsContext.Provider>
+    <ReceptionBillsContext.Provider value={value}>
+      {children}
+    </ReceptionBillsContext.Provider>
   );
 }
 

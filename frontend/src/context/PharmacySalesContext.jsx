@@ -1,21 +1,23 @@
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import {
-  createInitialSales,
   filterSalesByQuery,
   getTodaysSales,
+  loadPersistedSales,
+  persistSales,
   recordSale,
 } from "../data/pharmacySaleStore";
 
 const PharmacySalesContext = createContext(null);
 
 export function PharmacySalesProvider({ children }) {
-  const [sales, setSales] = useState(createInitialSales);
+  const [sales, setSales] = useState(loadPersistedSales);
 
   const saveSale = useCallback((saleInput) => {
     let saleRecord = null;
     setSales((prev) => {
       const next = recordSale(prev, saleInput);
       saleRecord = next.saleRecord;
+      persistSales(next.sales);
       return next.sales;
     });
     return saleRecord;

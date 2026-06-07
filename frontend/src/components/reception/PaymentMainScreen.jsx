@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { formatEtb } from "../../data/receptionBills";
+import { getFixedServicePrice } from "../../data/receptionBillStore";
 import { useReceptionBills } from "../../context/ReceptionBillsContext";
 import BillStatusBadge from "./BillStatusBadge";
 import SettledBillsPanel from "./SettledBillsPanel";
@@ -75,9 +76,12 @@ export default function PaymentMainScreen({ onConfirm, restore }) {
     ? PAYMENT_METHOD_BY_ID[method]
     : null;
 
+  const fixedServicePrice = selectedBill ? getFixedServicePrice(selectedBill.service) : null;
+
   const amountNum = Number(amount);
   const amountDiffers =
     selectedBill &&
+    fixedServicePrice == null &&
     amount !== "" &&
     !Number.isNaN(amountNum) &&
     amountNum !== selectedBill.amount;
@@ -101,7 +105,8 @@ export default function PaymentMainScreen({ onConfirm, restore }) {
 
   function selectBill(bill) {
     setSelectedBill(bill);
-    setAmount(String(bill.amount));
+    const price = getFixedServicePrice(bill.service) ?? bill.amount;
+    setAmount(String(price));
     setMethod(null);
     setBanksOpen(false);
     setQuery(bill.patientName);
@@ -399,10 +404,20 @@ export default function PaymentMainScreen({ onConfirm, restore }) {
                   type="number"
                   min="1"
                   value={amount}
+                  readOnly={fixedServicePrice != null}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="w-full rounded-xl border border-[rgba(34,211,238,0.15)] bg-[rgba(5,13,26,0.6)] py-3.5 pl-14 pr-4 text-lg text-white outline-none transition-colors focus:border-[#22D3EE] focus:shadow-[0_0_16px_rgba(34,211,238,0.2)]"
+                  className={`w-full rounded-xl border border-[rgba(34,211,238,0.15)] py-3.5 pl-14 pr-4 text-lg text-white outline-none transition-colors ${
+                    fixedServicePrice != null
+                      ? "cursor-default bg-[rgba(5,13,26,0.35)] text-[#CBD5E1]"
+                      : "bg-[rgba(5,13,26,0.6)] focus:border-[#22D3EE] focus:shadow-[0_0_16px_rgba(34,211,238,0.2)]"
+                  }`}
                 />
               </div>
+              {fixedServicePrice != null && (
+                <p className="mt-2 text-sm text-[#94A3B8]">
+                  Fixed service price — {formatEtb(fixedServicePrice)}
+                </p>
+              )}
               {amountDiffers && (
                 <p className="mt-2 text-sm text-[#F59E0B]">Amount differs from original bill</p>
               )}

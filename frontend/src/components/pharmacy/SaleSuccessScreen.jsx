@@ -38,8 +38,6 @@ export default function SaleSuccessScreen({ sale, record, onNewSale, onViewSales
           <DetailRow label="Sale ID">
             <span className="font-mono text-[#22D3EE]">{saleId}</span>
           </DetailRow>
-          <DetailRow label="Medicine">{sale.medicineName}</DetailRow>
-          <DetailRow label="Quantity">{sale.quantity}</DetailRow>
           <DetailRow label="Amount paid" highlight>
             {formatEtb(sale.amount)}
           </DetailRow>

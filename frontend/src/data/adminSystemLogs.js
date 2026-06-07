@@ -52,12 +52,12 @@ export function createInitialSystemLogs() {
       user: "Dawit Bekele",
       role: "Manager",
       action: "Report Generated",
-      details: "Monthly Report Nov 2024",
+      details: "Monthly Report Nov 2026",
       ipAddress: "192.168.1.8",
       status: "Success",
       type: "Payment",
       fullDetail:
-        "Manager exported monthly financial summary for November 2024. Format: PDF. Rows: 1,842 transactions. Export completed without errors.",
+        "Manager exported monthly financial summary for November 2026. Format: PDF. Rows: 1,842 transactions. Export completed without errors.",
     },
     {
       id: "log-3",
