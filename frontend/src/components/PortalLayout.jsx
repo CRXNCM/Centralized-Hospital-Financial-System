@@ -1,5 +1,5 @@
 import LiveClock from "./LiveClock";
-import PortalSidebar from "./PortalSidebar";
+import PortalSidebar, { SIDEBAR_WIDTH } from "./PortalSidebar";
 
 function formatHeaderDate(date) {
   return date.toLocaleDateString("en-US", {
@@ -41,7 +41,7 @@ export default function PortalLayout({
         notificationBadges={notificationBadges}
       />
 
-      <main className="ml-[72px] min-h-screen">
+      <main className="min-h-screen" style={{ marginLeft: SIDEBAR_WIDTH }}>
         <header className="sticky top-0 z-20 border-b border-[rgba(34,211,238,0.08)] bg-[rgba(5,13,26,0.6)] px-8 py-6 backdrop-blur-md">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>

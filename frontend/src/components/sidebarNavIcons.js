@@ -5,6 +5,7 @@ import {
   IconHistory,
   IconHospital,
   IconPayment,
+  IconPharmacy,
   IconDatabase,
   IconSettings,
   IconShield,
@@ -28,6 +29,8 @@ export const SIDEBAR_NAV_ICONS = {
   users: IconUsers,
   logs: IconDatabase,
   notifications: IconAlert,
+  sale: IconPharmacy,
+  sales: IconBarChart,
   system: IconHospital,
 };
 

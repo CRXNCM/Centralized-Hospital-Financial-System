@@ -44,6 +44,26 @@ export const ROLES = {
       history: "Patient History",
     },
   },
+  pharmacy: {
+    id: "pharmacy",
+    label: "Pharmacy Reception",
+    portalTitle: "Pharmacy Reception Portal",
+    portalSubtitle: "Medicine sales & pharmacy desk",
+    userName: "Hanna",
+    userInitial: "H",
+    badge: "Pharmacy Desk",
+    headerMode: "welcome",
+    navItems: [
+      { id: "home", label: "Today's Desk" },
+      { id: "sale", label: "Create Sale" },
+      { id: "sales", label: "My Sales" },
+    ],
+    pageTitles: {
+      home: "Today's Desk",
+      sale: "Create Sale",
+      sales: "My Sales Records",
+    },
+  },
   admin: {
     id: "admin",
     label: "System Admin",
@@ -73,4 +93,4 @@ export const ROLES = {
   },
 };
 
-export const ROLE_LIST = [ROLES.manager, ROLES.reception, ROLES.admin];
+export const ROLE_LIST = [ROLES.manager, ROLES.reception, ROLES.pharmacy, ROLES.admin];

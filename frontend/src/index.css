@@ -412,8 +412,48 @@ body {
   transform: translateY(-1px);
 }
 
+.btn-landing-purple {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  box-shadow: 0 0 16px rgba(139, 92, 246, 0.25);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.btn-landing-purple:hover {
+  box-shadow: 0 0 24px rgba(139, 92, 246, 0.4);
+  transform: translateY(-1px);
+}
+
 .login-modal-panel {
   animation: modal-pop 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.role-select-overlay {
+  animation: role-overlay-in 0.25s ease-out;
+}
+
+.role-select-panel {
+  animation: modal-pop 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.role-select-card:focus-visible {
+  outline: 2px solid rgba(34, 211, 238, 0.5);
+  outline-offset: 2px;
+}
+
+.role-select-list {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(34, 211, 238, 0.25) transparent;
+}
+
+@keyframes role-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .landing-fade-up {

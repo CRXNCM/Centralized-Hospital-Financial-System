@@ -1,5 +1,6 @@
 import QuickAlerts from "./manager/QuickAlerts";
 import ManagerTransactionsTable from "./manager/ManagerTransactionsTable";
+import ReceptionCollectionsChart from "./manager/ReceptionCollectionsChart";
 import RevenueChart from "./RevenueChart";
 import StatCards from "./StatCards";
 
@@ -15,7 +16,9 @@ export default function Dashboard({ onNavigate, alerts, onDismissAlert }) {
         <QuickAlerts alerts={alerts} onDismiss={onDismissAlert} />
       </div>
 
-      <ManagerTransactionsTable limit={10} hideAmount />
+      <ReceptionCollectionsChart />
+
+      <ManagerTransactionsTable limit={10} />
     </div>
   );
 }

@@ -2,13 +2,17 @@ import { STAT_VALUES } from "../data/managerMockData";
 import { useCountUp } from "../hooks/useCountUp";
 import { IconCheck, IconClock, IconTrendUp, IconUsers } from "./icons";
 
+function formatEtb(n) {
+  return n.toLocaleString();
+}
+
 const statsConfig = [
   {
-    id: "transactions",
-    label: "Transactions Today",
-    numericValue: STAT_VALUES.verified + STAT_VALUES.pending,
-    prefix: "",
-    format: (n) => String(n),
+    id: "revenue",
+    label: "Revenue Today",
+    numericValue: STAT_VALUES.revenue,
+    prefix: "ETB ",
+    format: formatEtb,
     navigateTo: "transactions",
     accent: "cyan",
     icon: IconTrendUp,
@@ -34,9 +38,9 @@ const statsConfig = [
   {
     id: "verified",
     label: "Verified Payments",
-    numericValue: STAT_VALUES.verified,
-    prefix: "",
-    format: (n) => String(n),
+    numericValue: STAT_VALUES.verifiedAmount,
+    prefix: "ETB ",
+    format: formatEtb,
     navigateTo: "transactions",
     filter: "verified",
     accent: "emerald",
@@ -49,9 +53,9 @@ const statsConfig = [
   {
     id: "pending",
     label: "Pending Verifications",
-    numericValue: STAT_VALUES.pending,
-    prefix: "",
-    format: (n) => String(n),
+    numericValue: STAT_VALUES.pendingAmount,
+    prefix: "ETB ",
+    format: formatEtb,
     navigateTo: "transactions",
     filter: "pending",
     accent: "amber",
@@ -65,7 +69,7 @@ const statsConfig = [
 
 function StatValue({ stat }) {
   const count = useCountUp(stat.numericValue);
-  const display = `${stat.prefix}${stat.format(count)}`;
+  const display = `${stat.prefix}${stat.format(Math.round(count))}`;
 
   return (
     <p className={`mt-2 text-2xl font-bold tracking-tight ${stat.valueClass}`}>{display}</p>
@@ -101,7 +105,7 @@ export default function StatCards({ onNavigate }) {
             {stat.showTrend && (
               <p className="mt-3 flex items-center gap-1 text-xs font-medium text-[#10B981]">
                 <IconTrendUp className="h-3.5 w-3.5" />
-                +12.4% vs yesterday (volume)
+                +12.4% vs yesterday
               </p>
             )}
             <p className="mt-2 text-xs text-[#94A3B8] opacity-0 transition-opacity group-hover:opacity-100">

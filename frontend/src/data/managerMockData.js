@@ -3,8 +3,8 @@ import { pickRandomPaymentMethod } from "./paymentMethods";
 export const STAT_VALUES = {
   revenue: 24850,
   patients: 47,
-  verified: 44,
-  pending: 3,
+  verifiedAmount: 22100,
+  pendingAmount: 2750,
 };
 
 export const CHART_DATA = {
@@ -47,6 +47,28 @@ export const CHART_PERIOD_LABELS = {
   daily: "today",
   weekly: "this week",
   monthly: "this month",
+};
+
+/** Collections recorded per receptionist — manager dashboard */
+export const RECEPTION_COLLECTIONS = {
+  daily: [
+    { name: "Tigist Alemu", shortName: "Tigist A.", amount: 9850, transactions: 18, color: "#22D3EE" },
+    { name: "Meron Haile", shortName: "Meron H.", amount: 7200, transactions: 14, color: "#10B981" },
+    { name: "Hiwot Tadesse", shortName: "Hiwot T.", amount: 5400, transactions: 11, color: "#8B5CF6" },
+    { name: "Selam Worku", shortName: "Selam W.", amount: 2400, transactions: 4, color: "#F59E0B" },
+  ],
+  weekly: [
+    { name: "Tigist Alemu", shortName: "Tigist A.", amount: 52400, transactions: 96, color: "#22D3EE" },
+    { name: "Meron Haile", shortName: "Meron H.", amount: 41800, transactions: 78, color: "#10B981" },
+    { name: "Hiwot Tadesse", shortName: "Hiwot T.", amount: 35200, transactions: 64, color: "#8B5CF6" },
+    { name: "Selam Worku", shortName: "Selam W.", amount: 12800, transactions: 22, color: "#F59E0B" },
+  ],
+  monthly: [
+    { name: "Tigist Alemu", shortName: "Tigist A.", amount: 218400, transactions: 412, color: "#22D3EE" },
+    { name: "Meron Haile", shortName: "Meron H.", amount: 186200, transactions: 348, color: "#10B981" },
+    { name: "Hiwot Tadesse", shortName: "Hiwot T.", amount: 154800, transactions: 290, color: "#8B5CF6" },
+    { name: "Selam Worku", shortName: "Selam W.", amount: 62400, transactions: 118, color: "#F59E0B" },
+  ],
 };
 
 const PATIENTS = [
