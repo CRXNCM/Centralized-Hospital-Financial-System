@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { STAT_VALUES } from "../data/managerMockData";
-import { getPharmacyTodayTotal } from "../data/pharmacySaleStore";
+import { useCallback, useEffect, useState } from "react";
+import { PHARMACY_COLLECTIONS, STAT_VALUES } from "../data/managerMockData";
+import { buildPharmacyCollections } from "../data/pharmacySaleStore";
 import { useCountUp } from "../hooks/useCountUp";
 import { IconCheck, IconClock, IconPharmacy, IconTrendUp, IconUsers } from "./icons";
 
@@ -8,13 +8,21 @@ function formatEtb(n) {
   return n.toLocaleString();
 }
 
-function usePharmacyTodayTotal() {
-  const [total, setTotal] = useState(() => getPharmacyTodayTotal());
+function getPharmacyDailyCollectionsTotal() {
+  return buildPharmacyCollections("daily", PHARMACY_COLLECTIONS.daily).reduce(
+    (sum, row) => sum + row.amount,
+    0,
+  );
+}
+
+function usePharmacyDailyCollectionsTotal() {
+  const [total, setTotal] = useState(getPharmacyDailyCollectionsTotal);
+
+  const refresh = useCallback(() => {
+    setTotal(getPharmacyDailyCollectionsTotal());
+  }, []);
 
   useEffect(() => {
-    function refresh() {
-      setTotal(getPharmacyTodayTotal());
-    }
     window.addEventListener("pharmacy-sales-updated", refresh);
     window.addEventListener("storage", refresh);
     window.addEventListener("focus", refresh);
@@ -23,7 +31,7 @@ function usePharmacyTodayTotal() {
       window.removeEventListener("storage", refresh);
       window.removeEventListener("focus", refresh);
     };
-  }, []);
+  }, [refresh]);
 
   return total;
 }
@@ -38,7 +46,7 @@ function StatValue({ stat }) {
 }
 
 export default function StatCards({ onNavigate }) {
-  const pharmacyTodayTotal = usePharmacyTodayTotal();
+  const pharmacyTodayTotal = usePharmacyDailyCollectionsTotal();
 
   const statsConfig = [
     {

@@ -1,5 +1,7 @@
 import QuickAlerts from "./manager/QuickAlerts";
 import ManagerTransactionsTable from "./manager/ManagerTransactionsTable";
+import PharmacyCollectionsChart from "./manager/PharmacyCollectionsChart";
+import PharmacyTransactionsTable from "./manager/PharmacyTransactionsTable";
 import ReceptionCollectionsChart from "./manager/ReceptionCollectionsChart";
 import RevenueChart from "./RevenueChart";
 import StatCards from "./StatCards";
@@ -19,6 +21,10 @@ export default function Dashboard({ onNavigate, alerts, onDismissAlert }) {
       <ReceptionCollectionsChart />
 
       <ManagerTransactionsTable limit={10} />
+
+      <PharmacyCollectionsChart />
+
+      <PharmacyTransactionsTable limit={10} />
     </div>
   );
 }

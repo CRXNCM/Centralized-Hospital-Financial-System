@@ -73,6 +73,25 @@ export const RECEPTION_COLLECTIONS = {
   ],
 };
 
+/** Collections recorded per pharmacy desk staff — manager dashboard */
+export const PHARMACY_COLLECTIONS = {
+  daily: [
+    { name: "Hanna Solomon", shortName: "Hanna S.", amount: 890, transactions: 3, color: "#8B5CF6" },
+    { name: "Sara Bekele", shortName: "Sara B.", amount: 620, transactions: 2, color: "#A78BFA" },
+    { name: "Liya Tadesse", shortName: "Liya T.", amount: 410, transactions: 1, color: "#C084FC" },
+  ],
+  weekly: [
+    { name: "Hanna Solomon", shortName: "Hanna S.", amount: 4820, transactions: 16, color: "#8B5CF6" },
+    { name: "Sara Bekele", shortName: "Sara B.", amount: 3640, transactions: 11, color: "#A78BFA" },
+    { name: "Liya Tadesse", shortName: "Liya T.", amount: 2180, transactions: 7, color: "#C084FC" },
+  ],
+  monthly: [
+    { name: "Hanna Solomon", shortName: "Hanna S.", amount: 21450, transactions: 72, color: "#8B5CF6" },
+    { name: "Sara Bekele", shortName: "Sara B.", amount: 16820, transactions: 54, color: "#A78BFA" },
+    { name: "Liya Tadesse", shortName: "Liya T.", amount: 9340, transactions: 31, color: "#C084FC" },
+  ],
+};
+
 const PATIENTS = [
   "Abebe Girma", "Fatuma Ali", "Daniel Tesfaye", "Meron Haile",
   "Yonas Bekele", "Hiwot Tadesse", "Selam Desta", "Bereket Alemu",

@@ -21,7 +21,7 @@ export default function SaleDetailModal({ sale, onClose }) {
       >
         <div className="flex items-start justify-between border-b border-[rgba(34,211,238,0.1)] px-6 py-5">
           <div>
-            <h3 className="text-xl font-bold text-white">{sale.medicineName}</h3>
+            <h3 className="text-xl font-bold text-white">Pharmacy Sale</h3>
             <p className="mt-1 font-mono text-sm text-[#22D3EE]">{sale.saleId}</p>
           </div>
           <button
@@ -43,7 +43,6 @@ export default function SaleDetailModal({ sale, onClose }) {
 
           <dl className="space-y-3">
             {[
-              ["Quantity", sale.quantity],
               ["Amount paid", formatEtb(sale.amount)],
               [
                 "Payment method",

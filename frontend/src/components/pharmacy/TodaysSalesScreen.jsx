@@ -3,14 +3,7 @@ import { formatEtb } from "../../data/pharmacySaleStore";
 import { usePharmacySales } from "../../context/PharmacySalesContext";
 import SaleDetailModal from "./SaleDetailModal";
 
-const TABLE_COLUMNS = [
-  "Medicine",
-  "Sale ID",
-  "Quantity",
-  "Amount",
-  "Payment Method",
-  "Time",
-];
+const TABLE_COLUMNS = ["Sale ID", "Amount", "Payment Method", "Time"];
 
 function StatCard({ label, value, valueClassName = "text-white" }) {
   return (
@@ -34,11 +27,11 @@ export default function TodaysSalesScreen({ onCreateSale }) {
 
   const stats = useMemo(() => {
     const totalCollected = todaysSales.reduce((sum, s) => sum + s.amount, 0);
-    const totalUnits = todaysSales.reduce((sum, s) => sum + s.quantity, 0);
+    const saleCount = todaysSales.length;
     return {
       totalCollected,
-      saleCount: todaysSales.length,
-      totalUnits,
+      saleCount,
+      averageSale: saleCount ? Math.round(totalCollected / saleCount) : 0,
     };
   }, [todaysSales]);
 
@@ -57,8 +50,8 @@ export default function TodaysSalesScreen({ onCreateSale }) {
         />
         <StatCard label="Sales Recorded" value={stats.saleCount} />
         <StatCard
-          label="Units Sold"
-          value={stats.totalUnits}
+          label="Average Sale"
+          value={formatEtb(stats.averageSale)}
           valueClassName="text-[#10B981]"
         />
       </div>
@@ -70,7 +63,7 @@ export default function TodaysSalesScreen({ onCreateSale }) {
           </p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[880px] text-left text-sm">
+            <table className="w-full min-w-[560px] text-left text-sm">
               <thead>
                 <tr className="border-b border-[rgba(34,211,238,0.1)] bg-[rgba(5,13,26,0.4)]">
                   {TABLE_COLUMNS.map((col) => (
@@ -90,9 +83,7 @@ export default function TodaysSalesScreen({ onCreateSale }) {
                     onClick={() => setSelectedSale(row)}
                     className="table-row-hover cursor-pointer border-b border-[rgba(34,211,238,0.06)] transition-colors duration-150"
                   >
-                    <td className="px-5 py-4 font-medium text-white">{row.medicineName}</td>
-                    <td className="px-5 py-4 font-mono text-xs text-[#94A3B8]">{row.saleId}</td>
-                    <td className="px-5 py-4 text-[#94A3B8]">{row.quantity}</td>
+                    <td className="px-5 py-4 font-mono text-xs text-white">{row.saleId}</td>
                     <td className="px-5 py-4 font-semibold text-[#10B981]">
                       {formatEtb(row.amount)}
                     </td>

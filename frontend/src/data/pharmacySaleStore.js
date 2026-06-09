@@ -65,8 +65,23 @@ export function generateSaleId(date = new Date()) {
   return `PHM-${y}${m}${d}-${h}${min}`;
 }
 
-function isToday(isoString) {
-  const date = new Date(isoString);
+function saleRecordedDate(sale) {
+  if (sale.recordedAt) {
+    const date = new Date(sale.recordedAt);
+    if (!Number.isNaN(date.getTime())) return date;
+  }
+
+  const match = sale.saleId?.match(/^PHM-(\d{4})(\d{2})(\d{2})-/);
+  if (match) {
+    return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+  }
+
+  return null;
+}
+
+function isTodaySale(sale) {
+  const date = saleRecordedDate(sale);
+  if (!date) return false;
   const now = new Date();
   return (
     date.getFullYear() === now.getFullYear() &&
@@ -75,7 +90,70 @@ function isToday(isoString) {
   );
 }
 
-function buildSeedSale({ medicineName, quantity, paymentTypeId, amount, hoursAgo, minutesAgo = 0 }) {
+const PHARMACY_STAFF_COLORS = ["#8B5CF6", "#A78BFA", "#C084FC", "#7C3AED"];
+
+function staffShortName(fullName) {
+  const parts = String(fullName).trim().split(/\s+/);
+  if (parts.length < 2) return fullName;
+  return `${parts[0]} ${parts[1][0]}.`;
+}
+
+function filterSalesByPeriod(sales, period) {
+  const now = new Date();
+  return sales.filter((sale) => {
+    const date = new Date(sale.recordedAt);
+    if (period === "daily") return isTodaySale(sale);
+    if (period === "weekly") {
+      const weekAgo = new Date(now);
+      weekAgo.setDate(weekAgo.getDate() - 7);
+      return date >= weekAgo;
+    }
+    return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+  });
+}
+
+export function buildPharmacyCollections(period, fallback = []) {
+  const sales = filterSalesByPeriod(loadPersistedSales(), period);
+  const totals = {};
+
+  for (const sale of sales) {
+    const name = sale.recordedBy || PHARMACY_RECEPTIONIST_NAME;
+    if (!totals[name]) {
+      totals[name] = { name, amount: 0, transactions: 0 };
+    }
+    totals[name].amount += sale.amount;
+    totals[name].transactions += 1;
+  }
+
+  const fromSales = Object.values(totals)
+    .map((row, index) => ({
+      ...row,
+      shortName: staffShortName(row.name),
+      color: PHARMACY_STAFF_COLORS[index % PHARMACY_STAFF_COLORS.length],
+    }))
+    .sort((a, b) => b.amount - a.amount);
+
+  return fromSales.length > 0 ? fromSales : fallback;
+}
+
+export function getPharmacyTransactionsForManager(limit = 10) {
+  return loadPersistedSales()
+    .slice()
+    .sort((a, b) => new Date(b.recordedAt) - new Date(a.recordedAt))
+    .slice(0, limit)
+    .map((sale) => ({
+      id: sale.id,
+      saleId: sale.saleId,
+      amount: sale.amount,
+      amountLabel: formatEtb(sale.amount),
+      method: sale.method ?? sale.paymentType,
+      time: sale.timestamp ?? sale.time,
+      recordedBy: sale.recordedBy ?? PHARMACY_RECEPTIONIST_NAME,
+      status: "Paid",
+    }));
+}
+
+function buildSeedSale({ paymentTypeId, amount, hoursAgo, minutesAgo = 0, recordedBy }) {
   const date = new Date();
   date.setHours(date.getHours() - hoursAgo);
   date.setMinutes(date.getMinutes() - minutesAgo);
@@ -86,14 +164,12 @@ function buildSeedSale({ medicineName, quantity, paymentTypeId, amount, hoursAgo
   return {
     id: `sale-${saleCounter}`,
     saleId,
-    medicineName,
-    quantity,
     paymentTypeId,
     methodId: paymentTypeId,
     paymentType: paymentMethod?.label ?? paymentTypeId,
     method: paymentMethod?.label ?? paymentTypeId,
     amount,
-    recordedBy: PHARMACY_RECEPTIONIST_NAME,
+    recordedBy: recordedBy ?? PHARMACY_RECEPTIONIST_NAME,
     recordedAt: date.toISOString(),
     time: formatTime(date),
     timestamp: formatSaleTimestamp(date),
@@ -103,23 +179,17 @@ function buildSeedSale({ medicineName, quantity, paymentTypeId, amount, hoursAgo
 export function createInitialSales() {
   return [
     buildSeedSale({
-      medicineName: "Paracetamol 500mg",
-      quantity: 2,
       paymentTypeId: "cash",
       amount: 80,
       hoursAgo: 2,
     }),
     buildSeedSale({
-      medicineName: "Amoxicillin 250mg",
-      quantity: 1,
       paymentTypeId: "telebirr",
       amount: 450,
       hoursAgo: 1,
       minutesAgo: 20,
     }),
     buildSeedSale({
-      medicineName: "Metformin 500mg",
-      quantity: 3,
       paymentTypeId: "cbe-birr",
       amount: 360,
       hoursAgo: 0,
@@ -137,8 +207,6 @@ export function recordSale(sales, saleInput) {
   const record = {
     id: `sale-${Date.now()}`,
     saleId,
-    medicineName: saleInput.medicineName?.trim() || "Pharmacy Sale",
-    quantity: saleInput.quantity ?? 1,
     paymentTypeId: methodId,
     methodId,
     paymentType: methodLabel,
@@ -157,7 +225,7 @@ export function recordSale(sales, saleInput) {
 }
 
 export function getTodaysSales(sales) {
-  return sales.filter((s) => isToday(s.recordedAt));
+  return sales.filter(isTodaySale);
 }
 
 export function filterSalesByQuery(sales, query) {
@@ -165,8 +233,7 @@ export function filterSalesByQuery(sales, query) {
   if (!q) return sales;
   return sales.filter(
     (s) =>
-      s.medicineName.toLowerCase().includes(q) ||
       s.saleId.toLowerCase().includes(q) ||
-      s.paymentType.toLowerCase().includes(q),
+      (s.paymentType ?? s.method ?? "").toLowerCase().includes(q),
   );
 }

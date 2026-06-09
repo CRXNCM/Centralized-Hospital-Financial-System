@@ -8,11 +8,11 @@ export default function PharmacyHome({ onCreateSale, onViewSales }) {
 
   const stats = useMemo(() => {
     const total = todaysSales.reduce((sum, s) => sum + s.amount, 0);
-    const units = todaysSales.reduce((sum, s) => sum + s.quantity, 0);
+    const salesCount = todaysSales.length;
     return {
-      salesCount: todaysSales.length,
+      salesCount,
       totalCollected: total,
-      unitsSold: units,
+      averageSale: salesCount ? Math.round(total / salesCount) : 0,
     };
   }, [todaysSales]);
 
@@ -48,8 +48,10 @@ export default function PharmacyHome({ onCreateSale, onViewSales }) {
         <article className="glass-card p-5">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm text-[#94A3B8]">Units Sold</p>
-              <p className="mt-2 text-2xl font-bold text-white">{stats.unitsSold}</p>
+              <p className="text-sm text-[#94A3B8]">Average Sale</p>
+              <p className="mt-2 text-2xl font-bold text-white">
+                {formatEtb(stats.averageSale)}
+              </p>
             </div>
             <div className="rounded-xl bg-[rgba(34,211,238,0.08)] p-2">
               <IconCheck className="h-5 w-5 text-[#22D3EE]" />
@@ -92,13 +94,10 @@ export default function PharmacyHome({ onCreateSale, onViewSales }) {
                 className="flex flex-wrap items-center justify-between gap-3 px-6 py-4 transition-colors hover:bg-[rgba(34,211,238,0.04)]"
               >
                 <div>
-                  <p className="font-medium text-white">{sale.medicineName}</p>
-                  <p className="text-sm text-[#94A3B8]">
-                    Qty {sale.quantity} · {sale.method ?? sale.paymentType}
-                  </p>
+                  <p className="font-medium text-white">{sale.saleId}</p>
+                  <p className="text-sm text-[#94A3B8]">{sale.method ?? sale.paymentType}</p>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="font-mono text-xs text-[#94A3B8]">{sale.saleId}</span>
                   <span className="text-sm font-semibold text-[#10B981]">
                     {formatEtb(sale.amount)}
                   </span>

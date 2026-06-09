@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import {
   filterSalesByQuery,
   getTodaysSales,
@@ -11,6 +11,22 @@ const PharmacySalesContext = createContext(null);
 
 export function PharmacySalesProvider({ children }) {
   const [sales, setSales] = useState(loadPersistedSales);
+
+  useEffect(() => {
+    function syncFromStorage() {
+      setSales(loadPersistedSales());
+    }
+
+    window.addEventListener("pharmacy-sales-updated", syncFromStorage);
+    window.addEventListener("storage", syncFromStorage);
+    window.addEventListener("focus", syncFromStorage);
+
+    return () => {
+      window.removeEventListener("pharmacy-sales-updated", syncFromStorage);
+      window.removeEventListener("storage", syncFromStorage);
+      window.removeEventListener("focus", syncFromStorage);
+    };
+  }, []);
 
   const saveSale = useCallback((saleInput) => {
     let saleRecord = null;
